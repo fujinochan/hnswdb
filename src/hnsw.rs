@@ -181,6 +181,7 @@ where
 
         // Also search and connect the node to the zero layer.
         self.search_zero_layer(&node.feature, &mut searcher, cap);
+        self.assign_neighbors::<M0>(&mut node, &searcher.nearest, 0);
         self.update_neighbors(&node, &searcher.nearest, 0);
 
         if self.storage.num_layer() < node.neighbors.len() {
@@ -311,7 +312,7 @@ where
         };
         searcher.candidates.push(candidate);
         searcher.nearest.push(candidate);
-        searcher.seen.insert(0);
+        searcher.seen.insert(ep.id);
 
         searcher
     }
@@ -347,7 +348,11 @@ where
             .enumerate()
             .take(std::cmp::min(MM, nearest.len()))
         {
-            node.neighbors[layer - 1].neighbors[i] = (neighbor.index, neighbor.distance.into());
+            if MM == M {
+                node.neighbors[layer - 1].neighbors[i] = (neighbor.index, neighbor.distance.into());
+            } else {
+                node.zero_neighbors.neighbors[i] = (neighbor.index, neighbor.distance.into());
+            }
         }
     }
 
