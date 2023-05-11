@@ -32,10 +32,10 @@ fn random() {
     };
 
     let neighbors: Vec<_> = {
-        let mut hnsw = Hnsw::<_, Vec<f32>, Pcg64, _, 12, 24>::new(
+        let mut hnsw = Hnsw::<_, Vec<f32>, Pcg64, _, 4, 8>::new(
             SimpleEuclidean,
             hnsw::storage::NodeDB::new("/tmp/test.db"),
-            // hnsw::storage::HashMap::new(),
+            //hnsw::storage::HashMap::new(),
         );
         let mut id: usize = 0;
         for feature in features.clone() {
